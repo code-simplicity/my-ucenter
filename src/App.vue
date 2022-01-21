@@ -1,21 +1,22 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+	<div id="app">
+    
+  </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<script setup>
+// import { ref } from "vue";
+// import Verify from "./components/verifition/Verify.vue";
+// const verify = ref(0);
+// const captchaType = ref("");
+// const onShow = (type) => {
+// 	captchaType.value = type;
+// 	verify.value.show();
+// };
+// const handleSuccess = (res) => {
+// 	console.log(res);
+// 	console.log("sucess");
+// };
+</script>
+
+<style></style>
