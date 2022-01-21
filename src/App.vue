@@ -1,14 +1,14 @@
 <template>
 	<div id="app">
-		<Header></Header>
+		<!-- <Header></Header> -->
 		<router-view />
-		<Footer></Footer>
+		<!-- <Footer></Footer> -->
 	</div>
 </template>
 
 <script setup>
-import Header from "@/components/header/index.vue";
-import Footer from "@/components/footer/index.vue";
+// import Header from "@/components/header/index.vue";
+// import Footer from "@/components/footer/index.vue";
 // import { ref } from "vue";
 // const verify = ref(0);
 // const captchaType = ref("");
