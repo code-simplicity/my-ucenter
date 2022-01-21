@@ -1,12 +1,15 @@
 <template>
 	<div id="app">
-    
-  </div>
+		<Header></Header>
+		<router-view />
+		<Footer></Footer>
+	</div>
 </template>
 
 <script setup>
+import Header from "@/components/header/index.vue";
+import Footer from "@/components/footer/index.vue";
 // import { ref } from "vue";
-// import Verify from "./components/verifition/Verify.vue";
 // const verify = ref(0);
 // const captchaType = ref("");
 // const onShow = (type) => {

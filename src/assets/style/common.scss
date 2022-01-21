@@ -1,0 +1,8 @@
+.layoput-container {
+    width: calc(100% - 30px);
+    height: calc(100% - 30px);
+    margin: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}

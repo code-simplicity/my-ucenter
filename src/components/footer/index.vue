@@ -1,7 +1,7 @@
 <template>
-	<div></div>
+	<div>底部</div>
 </template>
-<script setup lang="ts">
+<script setup>
 import { ref } from "vue";
 </script>
 <style lang="scss" scope></style>
