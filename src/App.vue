@@ -22,4 +22,10 @@
 // };
 </script>
 
-<style></style>
+<style scoped lang="scss">
+#app {
+	width: 100vw;
+	height: 100vh;
+	background: $background;
+}
+</style>

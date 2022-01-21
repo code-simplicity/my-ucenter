@@ -1,7 +1,9 @@
 <template>
 	<div class="layout">
 		<Header></Header>
-		<router-view />
+		<div class="layout-center flex-center">
+			<router-view />
+		</div>
 		<Footer></Footer>
 	</div>
 </template>
@@ -12,7 +14,10 @@ import Footer from "@/components/footer/index.vue";
 </script>
 <style lang="scss" scope>
 .layout {
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vh;
+	.layout-center {
+		margin: 20px;
+	}
 }
 </style>

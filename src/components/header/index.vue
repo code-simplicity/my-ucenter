@@ -14,14 +14,14 @@ import { systemTitle } from "@/config";
 
 <style lang="scss" scoped>
 .header {
-	height: 60px;
+	height: 50px;
 	background: $header-background;
 	padding: 0 16px;
 	.header-center {
 		margin: 0 auto;
 		.header-logo {
 			color: $font-color;
-			line-height: 60px;
+			line-height: 50px;
 			font-size: 20px;
 			font-weight: 600;
 			margin-left: 120px;

@@ -19,6 +19,8 @@ import { copyRight } from "@/config";
 	padding-top: 20px;
 	margin-top: 16px;
 	border-top: 1px solid #ddd;
+	background: $background;
+
 	.footer-center {
 		margin: 0 auto;
 		.footer-center {
