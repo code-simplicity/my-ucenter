@@ -16,9 +16,17 @@ const alias = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // 打包路径
   base: "./",
+  // 解析到src路径
   resolve: {
     alias,
+  },
+  // 启动服务器
+  server: {
+    port: 3090,
+    host: "0.0.0.0",
+    open: true,
   },
   plugins: [vue()]
 })
