@@ -28,5 +28,13 @@ export default defineConfig({
     host: "0.0.0.0",
     open: true,
   },
-  plugins: [vue()]
+  plugins: [vue()],
+  // 配置引入css预处理器的全局颜色变量
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "./src/assets/style/variable.scss";`
+      }
+    }
+  }
 })
