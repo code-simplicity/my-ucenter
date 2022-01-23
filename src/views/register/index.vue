@@ -9,7 +9,7 @@
 				label-width="90px"
 				label-suffix=":"
 			>
-				<el-form-item label="邮箱" prop="email">
+				<el-form-item label="邮箱" prop="formRef.email">
 					<el-input
 						v-model="form.email"
 						placeholder="请输入邮箱"
@@ -21,12 +21,12 @@
 						class="margin-left"
 						type="primary"
 						:icon="Message"
-						@click="doSendEmaolCode"
+						@click="showVerify"
 						:disabled="isSendEmailBtn"
 						>{{ sendEmailBtnText }}</el-button
 					>
 				</el-form-item>
-				<el-form-item label="验证码" prop="captcha">
+				<el-form-item label="验证码" prop="formRef.captcha">
 					<el-input
 						v-model="form.captcha"
 						placeholder="请输入验证码"
@@ -35,7 +35,7 @@
 						clearable
 					></el-input>
 				</el-form-item>
-				<el-form-item label="昵称" prop="name">
+				<el-form-item label="昵称" prop="formRef.name">
 					<el-input
 						v-model="form.name"
 						placeholder="用户昵称"
@@ -44,7 +44,7 @@
 						clearable
 					></el-input>
 				</el-form-item>
-				<el-form-item label="密码" prop="password">
+				<el-form-item label="密码" prop="formRef.password">
 					<el-input
 						v-model="form.password"
 						placeholder="密码"
@@ -61,10 +61,17 @@
 						:disabled="isEmailCodeCompleted"
 						>注册</el-button
 					>
-					<span class="go-login">我已注册，直接登录</span>
+					<span class="go-login" @click="toLogin">我已注册，直接登录</span>
 				</el-form-item>
 			</el-form>
 		</div>
+		<Verify
+			mode="pop"
+			:captchaType="captchaType"
+			:imgSize="{ width: '400px', height: '200px' }"
+			ref="verify"
+			@success="doSendEmailCode"
+		></Verify>
 	</div>
 </template>
 <script setup lang="ts" name="Register">
@@ -76,6 +83,11 @@ import { Md5 } from "ts-md5/dist/md5";
 import { sendEmailCode } from "@/api/email";
 import { registerUser } from "@/api/user";
 import constants from "@/utils/constants";
+import Verify from "@/components/verifition/Verify.vue";
+
+// 响应式路由
+const router = useRouter();
+
 const form = reactive({
 	email: "",
 	name: "",
@@ -89,9 +101,10 @@ const isEmailCodeCompleted: Ref<boolean> = ref(true);
 const isSendEmailBtn: Ref<boolean> = ref(false);
 // 按钮文字发生改变
 const sendEmailBtnText: Ref<string> = ref("获取验证码");
-
-// 响应式路由
-const router = useRouter();
+// 展示verify
+const verify = ref();
+// verify类型
+const captchaType = ref("blockPuzzle");
 
 // 验证规则
 const rules = reactive({
@@ -125,8 +138,9 @@ const rules = reactive({
 	],
 });
 
-// 发送验证码
-const doSendEmaolCode = () => {
+// 展示验证码
+const showVerify = () => {
+	// 检查邮箱是否正确
 	// 发送之前检查邮箱地址
 	// 不可以为空
 	if (form.email === "") {
@@ -144,8 +158,15 @@ const doSendEmaolCode = () => {
 		});
 		return;
 	}
+	verify.value.show();
+};
+
+// 发送验证码
+const doSendEmailCode = (data: any) => {
+	console.log("data ==>", data);
 	// 封装邮箱数据
 	const params = {
+		verifition: encodeURIComponent(data.captchaVerification),
 		email: form.email,
 	};
 	// 发送邮箱验证码
@@ -154,7 +175,6 @@ const doSendEmaolCode = () => {
 			ElMessage.success({
 				message: res.msg,
 			});
-			console.log(res);
 			// 禁止发送按钮
 			isSendEmailBtn.value = true;
 			// 出现倒计时60s
@@ -178,7 +198,7 @@ const countDown = () => {
 			clearInterval(sendTime);
 			sendEmailBtnText.value = "获取验证码";
 			// 按钮可以点击
-			isSendEmailBtn.value = false;
+			isSendEmailBtn.value = true;
 		} else {
 			// 重新发送
 			sendEmailBtnText.value = "重新发送（" + time + "）";
@@ -211,15 +231,22 @@ const registerForm = (): void => {
 				message: res.msg,
 			});
 			// 跳转到登录界面
-			router.push({
+			router.replace({
 				path: "/login",
 			});
 		} else {
 			// 失败
 			ElMessage.error({
-				message: "注册失败，请检查重试！",
+				message: res.msg,
 			});
 		}
+	});
+};
+
+// 账户存在，直接登录
+const toLogin = () => {
+	router.replace({
+		path: "/login",
 	});
 };
 </script>

@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:40100';
+const baseUrl =
+  import.meta.env.VITE_BASE_URL
+axios.defaults.baseURL = baseUrl;
 
 const service = axios.create({
   timeout: 40000,

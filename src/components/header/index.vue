@@ -20,7 +20,7 @@ import { systemTitle } from "@/config";
 	.header-center {
 		margin: 0 auto;
 		.header-logo {
-			color: $font-color;
+			color: $black-font-size;
 			line-height: 50px;
 			font-size: 20px;
 			font-weight: 600;
