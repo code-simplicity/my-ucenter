@@ -23,9 +23,12 @@ import { copyRight } from "@/config";
 
 	.footer-center {
 		margin: 0 auto;
-		.footer-center {
+		color: $light-font-color;
+		.copy-right {
+			cursor: pointer;
 		}
 		.about-info {
+			cursor: pointer;
 		}
 	}
 }

@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
+// 使得setup语法糖也能使用name
+import vueSetupExtend from "vite-plugin-vue-setup-extend"
+
 import {
   resolve
 } from "path";
@@ -28,7 +31,7 @@ export default defineConfig({
     host: "0.0.0.0",
     open: true,
   },
-  plugins: [vue()],
+  plugins: [vue(), vueSetupExtend()],
   // 配置引入css预处理器的全局颜色变量
   css: {
     preprocessorOptions: {

@@ -7,7 +7,7 @@
 		<Footer></Footer>
 	</div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="Layout">
 import { ref } from "vue";
 import Header from "@/components/header/index.vue";
 import Footer from "@/components/footer/index.vue";
