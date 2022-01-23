@@ -57,7 +57,7 @@
 				<el-form-item>
 					<el-button
 						type="primary"
-						@click="submitForm(formRef)"
+						@click="registerForm"
 						:disabled="isEmailCodeCompleted"
 						>注册</el-button
 					>
@@ -71,7 +71,10 @@
 import { ref, reactive, Ref } from "vue";
 import { Message, User, Unlock, CircleCheck } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
+import { Md5 } from "ts-md5/dist/md5";
 import { sendEmailCode } from "@/api/email";
+import { registerUser } from "@/api/user";
 import constants from "@/utils/constants";
 const form = reactive({
 	email: "",
@@ -86,6 +89,9 @@ const isEmailCodeCompleted: Ref<boolean> = ref(true);
 const isSendEmailBtn: Ref<boolean> = ref(false);
 // 按钮文字发生改变
 const sendEmailBtnText: Ref<string> = ref("获取验证码");
+
+// 响应式路由
+const router = useRouter();
 
 // 验证规则
 const rules = reactive({
@@ -190,14 +196,31 @@ const checkEmailCode = () => {
 	}
 };
 
-// 注册
-const submitForm = () => {
-	console.log("submitForm");
-};
-
-// 重置
-const resetForm = () => {
-	console.log("resetForm");
+// 注册用户
+const registerForm = (): void => {
+	form.password = Md5.hashStr(form.password);
+	// 封装数据
+	const params = {
+		email: form.email,
+		name: form.name,
+		password: form.password,
+	};
+	registerUser(form.captcha, params).then((res: any) => {
+		if (res.code === constants.success) {
+			ElMessage.success({
+				message: res.msg,
+			});
+			// 跳转到登录界面
+			router.push({
+				path: "/login",
+			});
+		} else {
+			// 失败
+			ElMessage.error({
+				message: "注册失败，请检查重试！",
+			});
+		}
+	});
 };
 </script>
 <style lang="scss" scope>
