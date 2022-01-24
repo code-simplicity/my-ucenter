@@ -9,7 +9,7 @@
 				label-width="90px"
 				label-suffix=":"
 			>
-				<el-form-item label="邮箱" prop="formRef.email">
+				<el-form-item label="邮箱" prop="email">
 					<el-input
 						v-model="form.email"
 						placeholder="请输入邮箱"
@@ -26,7 +26,7 @@
 						>{{ sendEmailBtnText }}</el-button
 					>
 				</el-form-item>
-				<el-form-item label="验证码" prop="formRef.captcha">
+				<el-form-item label="验证码" prop="captcha">
 					<el-input
 						v-model="form.captcha"
 						placeholder="请输入验证码"
@@ -35,7 +35,7 @@
 						clearable
 					></el-input>
 				</el-form-item>
-				<el-form-item label="昵称" prop="formRef.name">
+				<el-form-item label="昵称" prop="name">
 					<el-input
 						v-model="form.name"
 						placeholder="用户昵称"
@@ -44,7 +44,7 @@
 						clearable
 					></el-input>
 				</el-form-item>
-				<el-form-item label="密码" prop="formRef.password">
+				<el-form-item label="密码" prop="password">
 					<el-input
 						v-model="form.password"
 						placeholder="密码"
@@ -78,6 +78,7 @@
 import { ref, reactive, Ref } from "vue";
 import { Message, User, Unlock, CircleCheck } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
+import type { ElForm } from "element-plus";
 import { useRouter } from "vue-router";
 import { Md5 } from "ts-md5/dist/md5";
 import { sendEmailCode } from "@/api/email";
@@ -94,6 +95,8 @@ const form = reactive({
 	password: "",
 	captcha: "",
 });
+
+const formRef = ref<InstanceType<typeof ElForm>>();
 
 // 逻辑常量，验证码没有填写之前不可以点击
 const isEmailCodeCompleted: Ref<boolean> = ref(true);
