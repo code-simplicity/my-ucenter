@@ -13,3 +13,17 @@ export const registerUser = (param: string, data: {}) => {
         data,
     })
 }
+
+/**
+ * 登录
+ * @param data 
+ * @param param 
+ * @returns 
+ */
+export const doLogin = (data: {}, param: string) => {
+    return service({
+        url: `/uc/login?verifition=${param}`,
+        method: "post",
+        data
+    })
+}

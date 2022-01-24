@@ -9,11 +9,12 @@
 				label-width="90px"
 				label-suffix=":"
 			>
-				<el-form-item label="账户" prop="user_name">
+				<el-form-item label="账户" prop="name">
 					<el-input
-						v-model="user.user_name"
+						v-model="user.name"
 						placeholder="请输入用户名/邮箱地址"
 						:prefix-icon="User"
+						autofocus
 						clearable
 					></el-input>
 				</el-form-item>
@@ -21,44 +22,110 @@
 					<el-input
 						v-model="user.password"
 						placeholder="请输入密码"
+						type="password"
 						:prefix-icon="Unlock"
 						clearable
 					></el-input>
 				</el-form-item>
-				<el-form-item label="验证码" prop="captcha">
-					<el-input
-						v-model="user.captcha"
-						placeholder="请输入密码"
-						:prefix-icon="CircleCheck"
-						clearable
-					></el-input>
-				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" @click="loginBtn">注册</el-button>
+					<el-button type="primary" @click="showVerify">登录</el-button>
 					<span class="go-register" @click="toRegister"
 						>未注册？注册新账户</span
 					>
 				</el-form-item>
 			</el-form>
 		</div>
+		<Verify
+			mode="pop"
+			:captchaType="captchaType"
+			:imgSize="{ width: '400px', height: '200px' }"
+			ref="verify"
+			@success="loginBtn"
+		></Verify>
 	</div>
 </template>
 <script setup lang="ts" name="Login">
 import { ref, reactive } from "vue";
-import { Unlock, User, CircleCheck } from "@element-plus/icons-vue";
+import { Unlock, User } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
+import { doLogin } from "@/api/user";
+import constants from "@/utils/constants";
+import Verify from "@/components/verifition/Verify.vue";
+import { ElForm, ElMessage } from "element-plus";
+import { Md5 } from "ts-md5";
+
 // 路由
 const router = useRouter();
+
+// 表单验证
+const formRef = ref<InstanceType<typeof ElForm>>();
+
 // 表单数据
 const user = reactive({
-	user_name: "",
+	name: "",
 	password: "",
-	captcha: "",
 });
-const rules = reactive({});
+
+// 验证规则
+const rules = reactive({
+	name: [
+		{
+			required: true,
+			message: "输入你独一无二的昵称/邮箱地址",
+			trigger: "blur",
+		},
+	],
+	password: [
+		{
+			required: true,
+			message: "输入你的密码",
+			trigger: "blur",
+		},
+	],
+});
+
+// 展示verify
+const verify = ref();
+// verify类型
+const captchaType = ref("blockPuzzle");
+
+// 展示
+const showVerify = () => {
+	if (user.name === "") {
+		return ElMessage.error({
+			message: "输入你独一无二的昵称/邮箱地址",
+		});
+	}
+	if (user.password === "") {
+		return ElMessage.error({
+			message: "输入你独一无二的昵称/邮箱地址",
+		});
+	}
+	verify.value.show();
+};
 
 // 登录
-const loginBtn = () => {};
+const loginBtn = (data: any) => {
+	// 修改密码为MD5加密
+	user.password = Md5.hashStr(user.password);
+	const params = {
+		name: user.name,
+		password: user.password,
+	};
+	doLogin(params, data.captchaVerification).then((res: any) => {
+		if (res.code === constants.success) {
+			ElMessage.success({
+				message: res.msg,
+			});
+			// 跳转到对应页面。如果有redirect
+			// 跳转到首页
+		} else {
+			ElMessage.error({
+				message: res.msg,
+			});
+		}
+	});
+};
 
 // 注册
 const toRegister = () => {

@@ -166,7 +166,6 @@ const showVerify = () => {
 
 // 发送验证码
 const doSendEmailCode = (data: any) => {
-	console.log("data ==>", data);
 	// 封装邮箱数据
 	const params = {
 		verifition: data.captchaVerification,
