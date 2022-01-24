@@ -169,7 +169,7 @@ const doSendEmailCode = (data: any) => {
 	console.log("data ==>", data);
 	// 封装邮箱数据
 	const params = {
-		verifition: encodeURIComponent(data.captchaVerification),
+		verifition: data.captchaVerification,
 		email: form.email,
 	};
 	// 发送邮箱验证码
