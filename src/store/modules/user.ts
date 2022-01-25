@@ -41,8 +41,9 @@ const actions = {
                     ElMessage.success({
                         message: res.msg,
                     });
-                    // 检查是否登录
-                    dispatch("chenkLogin")
+                    // 设置用户信息
+                    const userVo = res.data
+                    commit("userInfoChange", userVo)
                     resolve(res)
                 } else {
                     ElMessage.error({
@@ -53,11 +54,17 @@ const actions = {
         })
     },
     // 检查是否登录
-    chenkLogin({ commit }) {
-        checkToken().then((res: any) => {
+    async chenkLogin({ commit }) {
+        await checkToken().then((res: any) => {
             if (res.code === constants.success) {
-                const userVo = res.data
-                commit("userInfoChange", userVo)
+                console.log("res", res)
+                ElMessage.success({
+                    message: res.msg,
+                })
+            } else {
+                ElMessage.error({
+                    message: res.msg,
+                })
             }
         })
     },

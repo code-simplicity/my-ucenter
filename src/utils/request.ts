@@ -1,16 +1,16 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
+import router from '../router'
 const baseUrl: any = import.meta.env.VITE_BASE_URL
 // const baseUrl = "http://localhsot:40100"
 
 import constants from './constants'
 
-const showStatus = (status: any) => {
-    if (status === 403) {
-        // 登录
-    } else {
+const showStatus = (data: any) => {
+    // 错误码
+    if (data.code !== constants.success) {
         ElMessage.error({
-            message: `请求错误${status}`
+            message: `请求错误${data.code}`
         })
     }
 }
@@ -53,11 +53,17 @@ service.interceptors.request.use(
 // 响应拦截
 service.interceptors.response.use(
     (response: AxiosResponse) => {
-        const { data, status } = response
-        if (status === constants.status) {
+        const { data } = response
+        console.log(response)
+        if (data.code === constants.success) {
             return Promise.resolve(data)
+        } else if (data.code === constants.error) {
+            // 跳转登录界面
+            router.replace({
+                path: "/login"
+            })
         } else {
-            showStatus(status)
+            showStatus(data)
         }
     },
     (error) => {

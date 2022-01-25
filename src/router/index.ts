@@ -58,19 +58,22 @@ const router = createRouter({
 router.beforeEach((to, _from, next) => {
     NProgress.start();
     to.meta.title ? changeTitle(to.meta.title) : ""
-    if (to.path !== '/forgot') {
-        // 检查是否登录成功，通过vux是否存在userInfo
-        if (store.getters["user/userInfo"]) {
-            next()
-            if (_from.path !== "/home") {
-                next({
-                    path: "/home"
-                })
-            }
-        }
-    }
-    next()
     // 除类修改密码的界面，都会去检查是否有登录
+    // 检查是否登录成功，通过vux是否存在userInfo
+    // 只要路由变化，我们就监听是否登录
+    const userInfo = store.getters["user/userInfo"]
+    if (userInfo !== null) {
+        next()
+    } else {
+        if (to.path === '/forgot') {
+            next('/forgot')
+        } else {
+            next()
+        }
+        // store.dispatch("user/chenkLogin");
+        console.log(store.dispatch("user/chenkLogin"))
+        next()
+    }
 })
 
 router.afterEach((to, from) => {
