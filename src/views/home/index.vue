@@ -8,19 +8,31 @@
 		</div>
 		<div class="action">
 			<el-button type="primary">修改密码</el-button>
-			<el-button type="info">退出登录</el-button>
+			<el-button type="danger" @click="logout">退出登录</el-button>
 		</div>
 	</div>
 </template>
 <script setup lang="ts" name="Home">
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
+import { doLogout } from "../../api/user";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 //声明store
 const store = useStore();
-
 // 获取用户信息
 const userInfo = computed(() => store.getters["user/userInfo"]);
+
+// 退出登录
+const logout = () => {
+	store.dispatch("user/logout");
+	// 路由重定向
+	router.replace({
+		path: "/login",
+	});
+};
 </script>
 <style lang="scss" scope>
 .home {

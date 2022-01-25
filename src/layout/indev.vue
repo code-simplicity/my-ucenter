@@ -2,13 +2,13 @@
 	<div class="layout">
 		<Header></Header>
 		<div class="layout-center flex-center">
-			<router-view />
+			<router-view></router-view>
 		</div>
 		<Footer></Footer>
 	</div>
 </template>
 <script setup lang="ts" name="Layout">
-import { ref } from "vue";
+import { ref, nextTick, provide } from "vue";
 import Header from "@/components/header/index.vue";
 import Footer from "@/components/footer/index.vue";
 </script>

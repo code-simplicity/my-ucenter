@@ -48,7 +48,7 @@
 import { ref, reactive } from "vue";
 import { Unlock, User } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
-import { doLogin } from "../../api/user";
+import { checkToken } from "../../api/user";
 import constants from "../../utils/constants";
 import Verify from "@/components/verifition/Verify.vue";
 import { ElForm, ElMessage } from "element-plus";

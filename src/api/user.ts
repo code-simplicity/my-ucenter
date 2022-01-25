@@ -22,7 +22,7 @@ export const registerUser = (param: string, data: {}) => {
  */
 export const doLogin = (data: {}, param: string) => {
     return service({
-        url: `/uc/login?verifition=${param}`,
+        url: `/uc/user/login?verifition=${param}`,
         method: "post",
         data
     })
@@ -34,7 +34,18 @@ export const doLogin = (data: {}, param: string) => {
  */
 export const checkToken = () => {
     return service({
-        url: "/uc/check/token",
+        url: "/uc/user/check/token",
+        method: "get",
+    })
+}
+
+/**
+ * 退出登录
+ * @returns 
+ */
+export const doLogout = () => {
+    return service({
+        url: "/uc/user/logout",
         method: "get",
     })
 }

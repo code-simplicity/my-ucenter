@@ -59,20 +59,15 @@ router.beforeEach((to, _from, next) => {
     NProgress.start();
     to.meta.title ? changeTitle(to.meta.title) : ""
     if (to.path !== '/forgot') {
-        // 检查是否登录成功
-        checkToken().then((res: any) => {
-            if (res.code === constants.success) {
-                // 登录成功，获取token
-                const userVo = res.data
-                // 保存信息到localStorage
-                setUserInfo(userVo)
-                if (_from.path !== "/home") {
-                    next({
-                        path: "/home"
-                    })
-                }
+        // 检查是否登录成功，通过vux是否存在userInfo
+        if (store.getters["user/userInfo"]) {
+            next()
+            if (_from.path !== "/home") {
+                next({
+                    path: "/home"
+                })
             }
-        })
+        }
     }
     next()
     // 除类修改密码的界面，都会去检查是否有登录

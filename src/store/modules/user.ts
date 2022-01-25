@@ -1,6 +1,6 @@
-import { doLogin } from "../../api/user"
+import { doLogin, checkToken, doLogout } from "../../api/user"
 import { getToken } from "../../utils/token"
-import { getUserInfo } from "../../utils/userInfo"
+import { getUserInfo, setUserInfo, reomveUserInfo } from "../../utils/userInfo"
 import constants from "../../utils/constants";
 import { ElMessage } from "element-plus";
 
@@ -22,6 +22,10 @@ const mutations = {
     tokenChange(state, token) {
         state.token = token
         // 设置token存储
+    },
+    userInfoChange(state, userInfo) {
+        state.userInfo = userInfo
+        setUserInfo(userInfo)
     }
 }
 
@@ -34,10 +38,11 @@ const actions = {
         return new Promise((resolve) => {
             doLogin(data, data.captchaVerification).then((res: any) => {
                 if (res.code === constants.success) {
-                    // commit("tokenChange", res)
                     ElMessage.success({
                         message: res.msg,
                     });
+                    // 检查是否登录
+                    dispatch("chenkLogin")
                     resolve(res)
                 } else {
                     ElMessage.error({
@@ -46,7 +51,29 @@ const actions = {
                 }
             })
         })
-
+    },
+    // 检查是否登录
+    chenkLogin({ commit }) {
+        checkToken().then((res: any) => {
+            if (res.code === constants.success) {
+                const userVo = res.data
+                commit("userInfoChange", userVo)
+            }
+        })
+    },
+    // 退出登录
+    logout() {
+        doLogout().then((res: any) => {
+            if (res.code === constants.success) {
+                // 退出登录成功
+                ElMessage.success({
+                    message: res.msg,
+                })
+                // 删除缓存
+                localStorage.removeItem("vuex")
+                reomveUserInfo();
+            }
+        })
     }
 }
 
