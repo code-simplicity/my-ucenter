@@ -23,7 +23,7 @@ export default defineConfig({
   base: "./",
   // 解析到src路径
   resolve: {
-    alias,
+    alias
   },
   // 启动服务器
   server: {

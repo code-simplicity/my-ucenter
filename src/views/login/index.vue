@@ -48,14 +48,18 @@
 import { ref, reactive } from "vue";
 import { Unlock, User } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
-import { doLogin } from "@/api/user";
-import constants from "@/utils/constants";
+import { doLogin } from "../../api/user";
+import constants from "../../utils/constants";
 import Verify from "@/components/verifition/Verify.vue";
 import { ElForm, ElMessage } from "element-plus";
 import { Md5 } from "ts-md5";
+import { useStore } from "vuex";
 
 // 路由
 const router = useRouter();
+
+// vuex
+const store = useStore();
 
 // 表单验证
 const formRef = ref<InstanceType<typeof ElForm>>();
@@ -111,19 +115,13 @@ const loginBtn = (data: any) => {
 	const params = {
 		name: user.name,
 		password: user.password,
+		captchaVerification: encodeURIComponent(data.captchaVerification),
 	};
-	doLogin(params, data.captchaVerification).then((res: any) => {
-		if (res.code === constants.success) {
-			ElMessage.success({
-				message: res.msg,
-			});
-			// 跳转到对应页面。如果有redirect
-			// 跳转到首页
-		} else {
-			ElMessage.error({
-				message: res.msg,
-			});
-		}
+	//登录
+	store.dispatch("user/login", params).then(() => {
+		router.replace({
+			path: "/home",
+		});
 	});
 };
 

@@ -1,4 +1,4 @@
-import service from "@/utils/request";
+import service from "../utils/request";
 
 /**
  * 注册用户
@@ -25,5 +25,16 @@ export const doLogin = (data: {}, param: string) => {
         url: `/uc/login?verifition=${param}`,
         method: "post",
         data
+    })
+}
+
+/**
+ * 检查是否存在token
+ * @returns 
+ */
+export const checkToken = () => {
+    return service({
+        url: "/uc/check/token",
+        method: "get",
     })
 }

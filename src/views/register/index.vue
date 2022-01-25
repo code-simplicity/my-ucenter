@@ -81,9 +81,9 @@ import { ElMessage } from "element-plus";
 import type { ElForm } from "element-plus";
 import { useRouter } from "vue-router";
 import { Md5 } from "ts-md5/dist/md5";
-import { sendEmailCode } from "@/api/email";
-import { registerUser } from "@/api/user";
-import constants from "@/utils/constants";
+import { sendEmailCode } from "../../api/email";
+import { registerUser } from "../../api/user";
+import constants from "../../utils/constants";
 import Verify from "@/components/verifition/Verify.vue";
 
 // 响应式路由
