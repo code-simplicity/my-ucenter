@@ -71,12 +71,12 @@ import { Message, User, Unlock, CircleCheck } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import type { ElForm } from "element-plus";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import { Md5 } from "ts-md5/dist/md5";
-import { sendEmailCode } from "../../api/email";
-import { registerUser } from "../../api/user";
+import { sendResetEmailCode } from "../../api/email";
+import { resetUserInfo } from "../../api/user";
 import constants from "../../utils/constants";
 import Verify from "@/components/verifition/Verify.vue";
-import { useStore } from "vuex";
 
 // 响应式路由
 const router = useRouter();
@@ -92,19 +92,19 @@ let form = reactive({
 	captcha: "",
 });
 
-const formRef = ref<InstanceType<typeof ElForm>>();
+// const formRef = ref<InstanceType<typeof ElForm>>();
 
-// 获取用户信息
-const userInfo = computed(() => store.getters["user/userInfo"]);
+// // 获取用户信息
+// const userInfo = computed(() => store.getters["user/userInfo"]);
 
-// 初始化表单，用户登录以后可以存储信息
-const init = () => {
-	if (userInfo && userInfo.value !== "") {
-		form = userInfo.value;
-	}
-};
+// // 初始化表单，用户登录以后可以存储信息
+// const init = () => {
+// 	if (userInfo && userInfo.value !== "") {
+// 		form = userInfo.value;
+// 	}
+// };
 
-init();
+// init();
 
 // 验证规则
 const rules = reactive({
@@ -180,7 +180,7 @@ const doSendEmailCode = (data: any) => {
 		email: form.email,
 	};
 	// 发送邮箱验证码
-	sendEmailCode(params).then((res: any) => {
+	sendResetEmailCode(params).then((res: any) => {
 		if (res.code === constants.success) {
 			ElMessage.success({
 				message: res.msg,
@@ -225,6 +225,25 @@ const updateForm = (): void => {
 		name: form.userName,
 		password: form.password,
 	};
+	resetUserInfo(form.captcha, params).then((res: any) => {
+		if (res.code === constants.success) {
+			// 重置密码成功
+			ElMessage.success({
+				message: res.msg,
+			});
+			// 完成退出登录
+			// 跳转登录界面
+			store.dispatch("user/logout");
+			// 路由重定向
+			router.replace({
+				path: "/login",
+			});
+		} else {
+			ElMessage.error({
+				message: res.msg,
+			});
+		}
+	});
 };
 
 // 返回上一个页面

@@ -49,3 +49,17 @@ export const doLogout = () => {
         method: "get",
     })
 }
+
+/**
+ * 重置信息
+ * @param params 
+ * @param data 
+ * @returns 
+ */
+export const resetUserInfo = (params: string, data: {}) => {
+    return service({
+        url: `/uc/user/reset/info?emailCode=${params}`,
+        method: "put",
+        data
+    })
+}
