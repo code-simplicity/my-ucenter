@@ -10,7 +10,7 @@ const showStatus = (data: any) => {
     // 错误码
     if (data.code !== constants.success) {
         ElMessage.error({
-            message: `请求错误${data.code}`
+            message: `请求错误--${data.msg}`
         })
     }
 }
@@ -54,7 +54,6 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     (response: AxiosResponse) => {
         const { data } = response
-        console.log(response)
         if (data.code === constants.success) {
             return Promise.resolve(data)
         } else if (data.code === constants.error) {

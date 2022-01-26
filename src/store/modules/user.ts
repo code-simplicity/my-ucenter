@@ -5,15 +5,15 @@ import constants from "../../utils/constants";
 import { ElMessage } from "element-plus";
 
 const state = () => ({
-    token: null,
+    token: getToken(),
     userInfo: getUserInfo()
 })
 
 const getters = {
-    token(state) {
+    token: (state) => {
         return state.token
     },
-    userInfo(state) {
+    userInfo: (state) => {
         return state.userInfo
     }
 }
@@ -21,7 +21,6 @@ const getters = {
 const mutations = {
     tokenChange(state, token) {
         state.token = token
-        // 设置token存储
     },
     userInfoChange(state, userInfo) {
         state.userInfo = userInfo
@@ -44,6 +43,8 @@ const actions = {
                     // 设置用户信息
                     const userVo = res.data
                     commit("userInfoChange", userVo)
+                    // 设置token
+                    commit("tokenChange", getToken())
                     resolve(res)
                 } else {
                     ElMessage.error({
@@ -54,10 +55,9 @@ const actions = {
         })
     },
     // 检查是否登录
-    async chenkLogin({ commit }) {
-        await checkToken().then((res: any) => {
+    chenkLogin({ commit }) {
+        checkToken().then((res: any) => {
             if (res.code === constants.success) {
-                console.log("res", res)
                 ElMessage.success({
                     message: res.msg,
                 })

@@ -70,8 +70,7 @@ router.beforeEach((to, _from, next) => {
         } else {
             next()
         }
-        // store.dispatch("user/chenkLogin");
-        console.log(store.dispatch("user/chenkLogin"))
+        store.dispatch("user/chenkLogin");
         next()
     }
 })
